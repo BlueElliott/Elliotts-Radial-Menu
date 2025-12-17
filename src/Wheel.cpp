@@ -467,12 +467,12 @@ void Wheel::OnUpdate()
             auto& step = actionChain_.steps[actionChain_.currentStep];
 
             // Send this step's keybind
-            if (step.keybind.isSet())
+            if (step.keyCombo.key() != ScanCode::None)
             {
                 Log::i().Print(Severity::Info, "Executing chain step {}/{} for '{}'", actionChain_.currentStep + 1, actionChain_.steps.size(),
                                actionChain_.sourceElement ? actionChain_.sourceElement->displayName() : "unknown");
 
-                Input::i().SendKeybind(step.keybind.keyCombo(), std::nullopt);
+                Input::i().SendKeybind(step.keyCombo, std::nullopt);
             }
 
             // Move to next step
@@ -819,7 +819,7 @@ void Wheel::OnFocusLost()
     // Cancel any active action chains
     if (actionChain_.isActive())
     {
-        Log::i().Print(Severity::Warning, "Canceling active action chain due to focus loss");
+        Log::i().Print(Severity::Warn, "Canceling active action chain due to focus loss");
         actionChain_.reset();
     }
 }

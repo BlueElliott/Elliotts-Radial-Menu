@@ -195,11 +195,17 @@ public:
     // Action chain support - multiple keybinds triggered in sequence
     struct KeybindStep
     {
-        Keybind keybind;
-        mstime  delayAfterMs; // Delay before next step (default: 75ms)
+        KeyCombo keyCombo;
+        mstime   delayAfterMs; // Delay before next step (default: 75ms)
 
-        KeybindStep(const std::string& nickname, const std::string& displayName, const std::string& category, mstime delay = 75)
-            : keybind(nickname, displayName, category)
+        KeybindStep(KeyCombo kc = KeyCombo(), mstime delay = 75)
+            : keyCombo(kc)
+            , delayAfterMs(delay)
+        {
+        }
+
+        KeybindStep(ScanCode key, Modifier mod, mstime delay = 75)
+            : keyCombo(key, mod)
             , delayAfterMs(delay)
         {
         }

@@ -1,0 +1,26 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(rm:*)",
+      "Bash(test:*)",
+      "Bash(./vcpkg integrate:*)",
+      "Bash(export PATH=\"/c/Program Files/Microsoft Visual Studio/2022/Community/MSBuild/Current/Bin/amd64:$PATH\")",
+      "Bash(msbuild:*)",
+      "Bash(\"/c/Program Files/Microsoft Visual Studio/2022/Community/MSBuild/Current/Bin/amd64/MSBuild.exe\" -version)",
+      "Bash(\"/c/Program Files/Microsoft Visual Studio/2022/Community/MSBuild/Current/Bin/amd64/MSBuild.exe\" GW2Radial.sln /t:Build /p:Configuration=Debug /p:Platform=x64 /m)",
+      "Bash(\"/c/Program Files/Microsoft Visual Studio/2022/Community/MSBuild/Current/Bin/amd64/MSBuild.exe\" GW2Radial.sln /t:Build /p:Configuration=Debug /p:Platform=x64)",
+      "Bash(cmd.exe:*)",
+      "Bash(powershell.exe -Command \"& { & ''C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\Common7\\Tools\\Launch-VsDevShell.ps1''; msbuild GW2Radial.sln /t:Build /p:Configuration=Debug /p:Platform=x64 /v:minimal /nologo }\")",
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(tee:*)",
+      "Bash(powershell.exe -ExecutionPolicy Bypass -Command \"& ''C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\Common7\\Tools\\Launch-VsDevShell.ps1''; cd ''C:\\Users\\Aurora\\Projects\\GW2Radial''; msbuild GW2Radial.sln /t:Build /p:Configuration=Debug /p:Platform=x64 /v:minimal /nologo\")",
+      "Bash(\"/c/Program Files/Microsoft Visual Studio/2022/Community/MSBuild/Current/Bin/amd64/MSBuild.exe\" GW2Radial.sln /t:Build /p:Configuration=Debug /p:Platform=x64 /v:minimal /nologo)",
+      "Bash(cat:*)",
+      "Bash(ls:*)",
+      "Bash(\"C:/Program Files/Microsoft Visual Studio/2022/Community/MSBuild/Current/Bin/amd64/MSBuild.exe\" \"C:/Users/Aurora/Projects/GW2Radial/GW2Radial.sln\" /t:Build /p:Configuration=Debug /p:Platform=x64)",
+      "Bash(cmd //c:*)",
+      "Bash(powershell \"Get-Process | Where-Object {$_ProcessName -like ''*GW2*'' -or $_ProcessName -like ''*Guild*''} | Select-Object ProcessName,Id\")"
+    ]
+  }
+}

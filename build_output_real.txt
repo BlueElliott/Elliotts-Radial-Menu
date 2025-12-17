@@ -1,0 +1,11 @@
+'vswhere.exe' is not recognized as an internal or external command,
+operable program or batch file.
+**********************************************************************
+** Visual Studio 2022 Developer PowerShell v17.0
+** Copyright (c) 2025 Microsoft Corporation
+**********************************************************************
+
+  'pwsh' is not recognized as an internal or external command,
+  operable program or batch file.
+C:\Program Files\Microsoft Visual Studio\2022\Community\MSBuild\Microsoft\VC\v170\Microsoft.CppCommon.targets(156,5): error MSB3073: The command "pwsh C:\Users\Aurora\Projects\GW2Radial\extern\GW2Common\get_version.ps1 [C:\Users\Aurora\Projects\GW2Radial\extern\GW2Common\GW2Common.vcxproj]
+C:\Program Files\Microsoft Visual Studio\2022\Community\MSBuild\Microsoft\VC\v170\Microsoft.CppCommon.targets(156,5): error MSB3073: :VCEnd" exited with code 9009. [C:\Users\Aurora\Projects\GW2Radial\extern\GW2Common\GW2Common.vcxproj]

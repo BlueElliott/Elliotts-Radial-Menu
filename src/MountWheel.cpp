@@ -48,12 +48,10 @@ MountWheel::MountWheel(std::shared_ptr<Texture2D> bgTexture)
         auto* raptorElement = wheelElements_[MountIndex(MountType::Raptor)].get();
 
         // Step 1: Switch to Build Template 1 (Ctrl+1)
-        WheelElement::KeybindStep buildStep("test_build_1", "Build Template 1", "Mounts", 75);
-        buildStep.keybind.keyCombo(ScanCode::KEY_1, Input::Modifier::Ctrl);
+        WheelElement::KeybindStep buildStep(ScanCode::NumRow1, Modifier::Ctrl, 75);
 
         // Step 2: Switch to Equipment Template 1 (Ctrl+Shift+1)
-        WheelElement::KeybindStep equipStep("test_equip_1", "Equipment Template 1", "Mounts", 75);
-        equipStep.keybind.keyCombo(ScanCode::KEY_1, static_cast<Input::Modifier>(Input::Modifier::Ctrl | Input::Modifier::Shift));
+        WheelElement::KeybindStep equipStep(ScanCode::NumRow1, Modifier(Modifier::Ctrl | Modifier::Shift), 75);
 
         raptorElement->addChainStep(buildStep);
         raptorElement->addChainStep(equipStep);
