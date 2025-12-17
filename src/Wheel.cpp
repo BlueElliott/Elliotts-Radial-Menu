@@ -457,6 +457,41 @@ void Wheel::OnUpdate()
             .Display([&](const ImVec2&) { ImGui::TextWrapped("A radial menu was triggered, but no keybinds are currently bound for it, so nothing could be shown."); },
                      [&]() { showEmptyPopup_ = false; });
 
+    // Execute action chain steps
+    if (actionChain_.isActive())
+    {
+        const auto currentTime = TimeInMilliseconds();
+
+        if (currentTime >= actionChain_.nextStepTime)
+        {
+            auto& step = actionChain_.steps[actionChain_.currentStep];
+
+            // Send this step's keybind
+            if (step.keybind.isSet())
+            {
+                Log::i().Print(Severity::Info, "Executing chain step {}/{} for '{}'", actionChain_.currentStep + 1, actionChain_.steps.size(),
+                               actionChain_.sourceElement ? actionChain_.sourceElement->displayName() : "unknown");
+
+                Input::i().SendKeybind(step.keybind.keyCombo(), std::nullopt);
+            }
+
+            // Move to next step
+            actionChain_.currentStep++;
+
+            if (actionChain_.currentStep >= actionChain_.steps.size())
+            {
+                // Chain complete!
+                Log::i().Print(Severity::Info, "Action chain completed for '{}'", actionChain_.sourceElement ? actionChain_.sourceElement->displayName() : "unknown");
+                actionChain_.reset();
+            }
+            else
+            {
+                // Schedule next step
+                actionChain_.nextStepTime = currentTime + step.delayAfterMs;
+            }
+        }
+    }
+
     auto& cd = conditionalDelay_;
     if (OptHasValue(cd.element))
     {
@@ -780,6 +815,13 @@ void Wheel::OnFocusLost()
     currentTriggerTime_ = 0;
 
     conditionalDelay_   = {};
+
+    // Cancel any active action chains
+    if (actionChain_.isActive())
+    {
+        Log::i().Print(Severity::Warning, "Canceling active action chain due to focus loss");
+        actionChain_.reset();
+    }
 }
 
 bool Wheel::CanActivate(const WheelElement* we) const
@@ -1108,6 +1150,33 @@ void Wheel::SendKeybindOrDelay(OptKeybindWheelElement kbwe, std::optional<Point>
             Input::i().SendKeybind({}, mousePos);
         }
         return;
+    }
+
+    // Check if this is a WheelElement with an action chain
+    if (std::holds_alternative<WheelElement*>(kbwe))
+    {
+        WheelElement* element = std::get<WheelElement*>(kbwe);
+
+        if (element->hasActionChain())
+        {
+            // Queue the entire action chain for execution
+            actionChain_.steps         = element->getChain();
+            actionChain_.currentStep   = 0;
+            actionChain_.nextStepTime  = TimeInMilliseconds();
+            actionChain_.sourceElement = element;
+
+            if (mousePos)
+            {
+                Log::i().Print(Severity::Info, "Starting action chain for '{}' with {} steps.", element->displayName(), actionChain_.steps.size());
+                Input::i().SendKeybind({}, mousePos); // Reset cursor position
+            }
+            else
+            {
+                Log::i().Print(Severity::Info, "Starting action chain for '{}' with {} steps.", element->displayName(), actionChain_.steps.size());
+            }
+
+            return; // Don't use normal single-keybind flow
+        }
     }
 
     auto cs                = MumbleLink::i().currentState();

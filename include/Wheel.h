@@ -230,6 +230,30 @@ protected:
     ConditionalDelay              conditionalDelay_;
     WheelElement*                 conditionalDelayDisplay_ = nullptr;
 
+    // Action chain execution state
+    struct ActionChainState
+    {
+        std::vector<WheelElement::KeybindStep> steps;
+        size_t                                 currentStep      = 0;
+        mstime                                 nextStepTime     = 0;
+        WheelElement*                          sourceElement    = nullptr;
+
+        [[nodiscard]] bool isActive() const
+        {
+            return !steps.empty() && currentStep < steps.size();
+        }
+
+        void reset()
+        {
+            steps.clear();
+            currentStep  = 0;
+            nextStepTime = 0;
+            sourceElement = nullptr;
+        }
+    };
+
+    ActionChainState              actionChain_;
+
     ConfigurationOption<int>      centerBehaviorOption_;
     ConfigurationOption<Favorite> centerFavoriteOption_;
     ConfigurationOption<Favorite> delayFavoriteOption_;

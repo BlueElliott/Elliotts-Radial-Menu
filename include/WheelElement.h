@@ -192,6 +192,46 @@ public:
         return customBehavior_(true) || isBound() && IsVisible(cs, props_.value());
     }
 
+    // Action chain support - multiple keybinds triggered in sequence
+    struct KeybindStep
+    {
+        Keybind keybind;
+        mstime  delayAfterMs; // Delay before next step (default: 75ms)
+
+        KeybindStep(const std::string& nickname, const std::string& displayName, const std::string& category, mstime delay = 75)
+            : keybind(nickname, displayName, category)
+            , delayAfterMs(delay)
+        {
+        }
+    };
+
+    [[nodiscard]] bool hasActionChain() const
+    {
+        return useActionChain_ && !keybindChain_.empty();
+    }
+
+    [[nodiscard]] const std::vector<KeybindStep>& getChain() const
+    {
+        return keybindChain_;
+    }
+
+    [[nodiscard]] std::vector<KeybindStep>& getChain()
+    {
+        return keybindChain_;
+    }
+
+    void addChainStep(const KeybindStep& step)
+    {
+        keybindChain_.push_back(step);
+        useActionChain_ = true;
+    }
+
+    void clearChain()
+    {
+        keybindChain_.clear();
+        useActionChain_ = false;
+    }
+
     const Texture2D& appearance() const
     {
         return appearance_;
@@ -214,6 +254,10 @@ protected:
     Texture2D                                  appearance_;
     mstime                                     currentHoverTime_        = 0;
     mstime                                     currentExitTime_         = 0;
+
+    // Action chain support
+    std::vector<KeybindStep>                   keybindChain_;
+    bool                                       useActionChain_          = false;
     float                                      aspectRatio_             = 1.f;
     float                                      shadowStrength_          = 0.8f;
     float                                      colorizeAmount_          = 1.f;
