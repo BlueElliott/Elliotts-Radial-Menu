@@ -20,7 +20,29 @@
       "Bash(ls:*)",
       "Bash(\"C:/Program Files/Microsoft Visual Studio/2022/Community/MSBuild/Current/Bin/amd64/MSBuild.exe\" \"C:/Users/Aurora/Projects/GW2Radial/GW2Radial.sln\" /t:Build /p:Configuration=Debug /p:Platform=x64)",
       "Bash(cmd //c:*)",
-      "Bash(powershell \"Get-Process | Where-Object {$_ProcessName -like ''*GW2*'' -or $_ProcessName -like ''*Guild*''} | Select-Object ProcessName,Id\")"
+      "Bash(powershell \"Get-Process | Where-Object {$_ProcessName -like ''*GW2*'' -or $_ProcessName -like ''*Guild*''} | Select-Object ProcessName,Id\")",
+      "Bash(grep:*)",
+      "Bash(\"C:/Program Files/Microsoft Visual Studio/2022/Community/MSBuild/Current/Bin/amd64/MSBuild.exe\" GW2Radial.sln /t:Build /p:Configuration=Debug /p:Platform=x64)",
+      "Bash(\"C:/Program Files/Microsoft Visual Studio/2022/Community/MSBuild/Current/Bin/amd64/MSBuild.exe\" /noautoresponse GW2Radial.sln /t:Build /p:Configuration=Debug /p:Platform=x64)",
+      "Bash(./build_now.cmd)",
+      "Bash(./deploy_to_gw2.bat)",
+      "Bash(powershell -Command:*)",
+      "Bash(powershell -ExecutionPolicy Bypass -File add_template_resources.ps1:*)",
+      "Bash(python create_placeholder_templates.py:*)",
+      "Bash(python extract_templates.py:*)",
+      "Bash(python convert_to_dds.py:*)",
+      "Bash(copy:*)",
+      "Bash(cmd //c copy //Y \"C:\\Users\\Aurora\\Projects\\GW2Radial\\bin\\x64\\Debug\\gw2addon_gw2radial.dll\" \"C:\\Program Files\\Guild Wars 2\\addons\\gw2radial\\gw2addon_gw2radial.dll\")",
+      "Bash(git commit -m \"$(cat <<''EOF''\nAdd Template Wheel feature for Build + Equipment template switching\n\nThis commit adds a new Template Wheel that allows quick switching between\nBuild and Equipment template combinations with combat queuing support.\n\nFeatures:\n- 9 configurable template combo slots with custom helmet icons\n- Action chain system for sequential Build + Equipment template switching\n- Combat queuing with visual timer indicator\n- User-configurable visibility/usability conditions (Default/Underwater/On Water/WvW)\n- Custom ordering and priority controls\n- Seamless integration with existing wheel system\n\nTechnical changes:\n- Added TemplateWheel class with support for action chains\n- Enhanced WheelElement with customBehaviorKeepProps for hybrid custom/props logic\n- Added public props() getter/setter to WheelElement\n- Implemented props enforcement to ensure combat queuing works correctly\n- Added 9 helmet icon resources (IDR_TEMPLATE1-9)\n- Modified action chain queuing to support immediate queue clearing\n- Added support for custom behavior as pre-check (AND) vs override (OR)\n\n🤖 Generated with Claude Code\n\nCo-Authored-By: Claude Sonnet 4.5 <noreply@anthropic.com>\nEOF\n)\")",
+      "Bash(git tag:*)",
+      "Bash(\"C:/Program Files/Microsoft Visual Studio/2022/Community/MSBuild/Current/Bin/amd64/MSBuild.exe\" GW2Radial.sln //t:Build //p:Configuration=Release //p:Platform=x64 //nologo //verbosity:minimal)",
+      "Bash(git remote:*)",
+      "Bash(powershell \"Compress-Archive -Path ''v1.0.0/*'' -DestinationPath ''Elliotts-Radial-Menu-v1.0.0.zip'' -Force\")",
+      "Bash(git push:*)",
+      "Bash(git submodule status:*)",
+      "Bash(git fetch:*)",
+      "Bash(git checkout:*)",
+      "Bash(git restore:*)"
     ]
   }
 }
