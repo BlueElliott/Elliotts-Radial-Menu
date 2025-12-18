@@ -182,14 +182,34 @@ public:
         return keybind_.isSet();
     }
 
+    [[nodiscard]] ConditionalProperties props() const
+    {
+        return props_.value();
+    }
+
+    void props(ConditionalProperties p)
+    {
+        props_.value(p);
+    }
+
     [[nodiscard]] bool isUsable(ConditionalState cs) const
     {
-        return customBehavior_(false) || isBound() && IsUsable(cs, props_.value());
+        // If customBehaviorIsPrecheck is true, behavior acts as AND (pre-check before props)
+        // Otherwise it acts as OR (override that bypasses props)
+        if (customBehaviorIsPrecheck_)
+            return customBehavior_(false) && isBound() && IsUsable(cs, props_.value());
+        else
+            return customBehavior_(false) || isBound() && IsUsable(cs, props_.value());
     }
 
     [[nodiscard]] bool isVisible(ConditionalState cs) const
     {
-        return customBehavior_(true) || isBound() && IsVisible(cs, props_.value());
+        // If customBehaviorIsPrecheck is true, behavior acts as AND (pre-check before props)
+        // Otherwise it acts as OR (override that bypasses props)
+        if (customBehaviorIsPrecheck_)
+            return customBehavior_(true) && isBound() && IsVisible(cs, props_.value());
+        else
+            return customBehavior_(true) || isBound() && IsVisible(cs, props_.value());
     }
 
     // Action chain support - multiple keybinds triggered in sequence
@@ -250,6 +270,15 @@ public:
         disableBehaviorControls_ = true;
     }
 
+    // Set custom behavior as a pre-check (AND) instead of override (OR)
+    // This allows combining custom logic with props evaluation
+    void customBehaviorKeepProps(std::function<bool(bool)> behavior)
+    {
+        customBehavior_ = behavior;
+        customBehaviorIsPrecheck_ = true;
+        // Don't modify props or disableBehaviorControls - keep them as-is
+    }
+
 protected:
     ConfigurationOption<int>                   sortingPriorityOption_;
     ConfigurationOption<ConditionalProperties> props_;
@@ -270,6 +299,7 @@ protected:
     float                                      texWidth_                = 0.f;
     bool                                       premultiplyAlpha_        = false;
     std::function<bool(bool)>                  customBehavior_          = [](bool) { return false; };
+    bool                                       customBehaviorIsPrecheck_ = false;
     bool                                       disableBehaviorControls_ = false;
     glm::vec4                                  color_{};
 

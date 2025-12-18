@@ -41,23 +41,6 @@ MountWheel::MountWheel(std::shared_ptr<Texture2D> bgTexture)
         });
     force_ = force.get();
     AddElement(std::move(force));
-
-    // TEST: Add action chain to Raptor (first mount) - Build Template 1 + Equipment Template 1
-    // This tests the new action chain feature by triggering both template switches with one radial selection
-    {
-        auto* raptorElement = wheelElements_[MountIndex(MountType::Raptor)].get();
-
-        // Step 1: Switch to Build Template 1 (Ctrl+1)
-        WheelElement::KeybindStep buildStep(ScanCode::NumRow1, Modifier::Ctrl, 75);
-
-        // Step 2: Switch to Equipment Template 1 (Ctrl+Shift+1)
-        WheelElement::KeybindStep equipStep(ScanCode::NumRow1, Modifier(Modifier::Ctrl | Modifier::Shift), 75);
-
-        raptorElement->addChainStep(buildStep);
-        raptorElement->addChainStep(equipStep);
-
-        Log::i().Print(Severity::Info, "[TEST] Added 2-step action chain to Raptor: Build Template 1 -> Equipment Template 1");
-    }
 }
 
 void MountWheel::OnUpdate()

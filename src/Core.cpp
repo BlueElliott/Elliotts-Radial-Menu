@@ -12,6 +12,7 @@
 #include <NoveltyWheel.h>
 #include <SettingsMenu.h>
 #include <ShaderManager.h>
+#include <TemplateWheel.h>
 #include <UpdateCheck.h>
 #include <Utility.h>
 #include <Version.h>
@@ -102,6 +103,7 @@ void Core::InnerInitPreImGui()
     wheels_.push_back(std::make_unique<NoveltyWheel>(bgTex_));
     wheels_.push_back(std::make_unique<MarkerWheel>(bgTex_));
     wheels_.push_back(std::make_unique<ObjectMarkerWheel>(bgTex_));
+    wheels_.push_back(std::make_unique<TemplateWheel>(bgTex_));
 
     vertexCB_ = ShaderManager::i().MakeConstantBuffer<VertexCB>();
 }

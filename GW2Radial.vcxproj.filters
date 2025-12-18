@@ -40,6 +40,9 @@
     <ClCompile Include="src\MarkerWheel.cpp">
       <Filter>Source Files\Radials</Filter>
     </ClCompile>
+    <ClCompile Include="src\TemplateWheel.cpp">
+      <Filter>Source Files\Radials</Filter>
+    </ClCompile>
     <ClCompile Include="src\CustomWheel.cpp">
       <Filter>Source Files\Radials</Filter>
     </ClCompile>
@@ -67,6 +70,9 @@
       <Filter>Source Files\Radials</Filter>
     </ClInclude>
     <ClInclude Include="include\NoveltyWheel.h">
+      <Filter>Source Files\Radials</Filter>
+    </ClInclude>
+    <ClInclude Include="include\TemplateWheel.h">
       <Filter>Source Files\Radials</Filter>
     </ClInclude>
     <ClInclude Include="include\MarkerWheel.h">

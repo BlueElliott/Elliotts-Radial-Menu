@@ -475,6 +475,9 @@ void Wheel::OnUpdate()
                 Input::i().SendKeybind(step.keyCombo, std::nullopt);
             }
 
+            // Schedule next step using THIS step's delay (before incrementing)
+            const mstime delayAfterThisStep = step.delayAfterMs;
+
             // Move to next step
             actionChain_.currentStep++;
 
@@ -486,8 +489,9 @@ void Wheel::OnUpdate()
             }
             else
             {
-                // Schedule next step
-                actionChain_.nextStepTime = currentTime + step.delayAfterMs;
+                // Schedule next step using the delay we saved
+                actionChain_.nextStepTime = currentTime + delayAfterThisStep;
+                Log::i().Print(Severity::Debug, "Next step scheduled in {}ms", delayAfterThisStep);
             }
         }
     }
@@ -504,9 +508,38 @@ void Wheel::OnUpdate()
             {
                 if (cd.time <= currentTime && (std::holds_alternative<Keybind*>(cd.element) || CanActivate(std::get<WheelElement*>(cd.element))))
                 {
-                    auto kb = GetKeybindFromOpt(cd.element);
-                    if (kb)
-                        Input::i().SendKeybind(kb->keyCombo(), std::nullopt);
+                    // Check if this is a WheelElement with an action chain
+                    if (std::holds_alternative<WheelElement*>(cd.element))
+                    {
+                        WheelElement* element = std::get<WheelElement*>(cd.element);
+                        if (element->hasActionChain())
+                        {
+                            // Start the action chain for queued element
+                            actionChain_.steps         = element->getChain();
+                            actionChain_.currentStep   = 0;
+                            actionChain_.nextStepTime  = currentTime;
+                            actionChain_.sourceElement = element;
+                            Log::i().Print(Severity::Info, "Starting queued action chain for '{}' with {} steps.", element->displayName(), actionChain_.steps.size());
+
+                            // Clear the queue immediately since we've started the chain
+                            ResetConditionallyDelayed(false, currentTime);
+                            return; // Don't process clearConditionalDelayOnSend_ logic
+                        }
+                        else
+                        {
+                            // Normal single keybind
+                            auto kb = GetKeybindFromOpt(cd.element);
+                            if (kb)
+                                Input::i().SendKeybind(kb->keyCombo(), std::nullopt);
+                        }
+                    }
+                    else
+                    {
+                        // It's a Keybind*, send it directly
+                        auto kb = GetKeybindFromOpt(cd.element);
+                        if (kb)
+                            Input::i().SendKeybind(kb->keyCombo(), std::nullopt);
+                    }
 
                     if (clearConditionalDelayOnSend_)
                         ResetConditionallyDelayed(false, currentTime);
@@ -530,9 +563,39 @@ void Wheel::OnUpdate()
                         cd.testPassesTime = currentTime;
                     else if (currentTime >= cd.testPassesTime + conditionalDelayDelayOption_.value())
                     {
-                        auto kb = GetKeybindFromOpt(cd.element);
-                        if (kb)
-                            Input::i().SendKeybind(kb->keyCombo(), std::nullopt);
+                        // Check if this is a WheelElement with an action chain
+                        if (std::holds_alternative<WheelElement*>(cd.element))
+                        {
+                            WheelElement* element = std::get<WheelElement*>(cd.element);
+                            if (element->hasActionChain())
+                            {
+                                // Start the action chain for queued element
+                                actionChain_.steps         = element->getChain();
+                                actionChain_.currentStep   = 0;
+                                actionChain_.nextStepTime  = currentTime;
+                                actionChain_.sourceElement = element;
+                                Log::i().Print(Severity::Info, "Starting queued action chain for '{}' with {} steps.", element->displayName(), actionChain_.steps.size());
+
+                                // Clear the queue immediately since we've started the chain
+                                ResetConditionallyDelayed(true, currentTime);
+                                return; // Don't process clearConditionalDelayOnSend_ logic
+                            }
+                            else
+                            {
+                                // Normal single keybind
+                                auto kb = GetKeybindFromOpt(cd.element);
+                                if (kb)
+                                    Input::i().SendKeybind(kb->keyCombo(), std::nullopt);
+                            }
+                        }
+                        else
+                        {
+                            // It's a Keybind*, send it directly
+                            auto kb = GetKeybindFromOpt(cd.element);
+                            if (kb)
+                                Input::i().SendKeybind(kb->keyCombo(), std::nullopt);
+                        }
+
                         if (clearConditionalDelayOnSend_)
                             ResetConditionallyDelayed(true, currentTime);
                         else
@@ -1152,6 +1215,12 @@ void Wheel::SendKeybindOrDelay(OptKeybindWheelElement kbwe, std::optional<Point>
         return;
     }
 
+    auto cs                = MumbleLink::i().currentState();
+
+    // We're not checking WvW here; no reason to enqueue an action that would require a map change to execute
+    bool shouldAlwaysDelay = CustomDelayCheck(kbwe);
+    bool shouldDelay       = shouldAlwaysDelay || (enableQueuingOption_.value() && std::holds_alternative<WheelElement*>(kbwe) && !std::get<WheelElement*>(kbwe)->isUsable(cs));
+
     // Check if this is a WheelElement with an action chain
     if (std::holds_alternative<WheelElement*>(kbwe))
     {
@@ -1159,31 +1228,29 @@ void Wheel::SendKeybindOrDelay(OptKeybindWheelElement kbwe, std::optional<Point>
 
         if (element->hasActionChain())
         {
-            // Queue the entire action chain for execution
-            actionChain_.steps         = element->getChain();
-            actionChain_.currentStep   = 0;
-            actionChain_.nextStepTime  = TimeInMilliseconds();
-            actionChain_.sourceElement = element;
-
-            if (mousePos)
+            // If we can activate now (not in combat), start the chain immediately
+            if (!shouldDelay)
             {
-                Log::i().Print(Severity::Info, "Starting action chain for '{}' with {} steps.", element->displayName(), actionChain_.steps.size());
-                Input::i().SendKeybind({}, mousePos); // Reset cursor position
-            }
-            else
-            {
-                Log::i().Print(Severity::Info, "Starting action chain for '{}' with {} steps.", element->displayName(), actionChain_.steps.size());
-            }
+                actionChain_.steps         = element->getChain();
+                actionChain_.currentStep   = 0;
+                actionChain_.nextStepTime  = TimeInMilliseconds();
+                actionChain_.sourceElement = element;
 
-            return; // Don't use normal single-keybind flow
+                if (mousePos)
+                {
+                    Log::i().Print(Severity::Info, "Starting action chain for '{}' with {} steps.", element->displayName(), actionChain_.steps.size());
+                    Input::i().SendKeybind({}, mousePos); // Reset cursor position
+                }
+                else
+                {
+                    Log::i().Print(Severity::Info, "Starting action chain for '{}' with {} steps.", element->displayName(), actionChain_.steps.size());
+                }
+
+                return; // Don't use normal single-keybind flow
+            }
+            // Otherwise fall through to queue the element (action chain will start when conditions allow)
         }
     }
-
-    auto cs                = MumbleLink::i().currentState();
-
-    // We're not checking WvW here; no reason to enqueue an action that would require a map change to execute
-    bool shouldAlwaysDelay = CustomDelayCheck(kbwe);
-    bool shouldDelay       = shouldAlwaysDelay || (enableQueuingOption_.value() && std::holds_alternative<WheelElement*>(kbwe) && !std::get<WheelElement*>(kbwe)->isUsable(cs));
 
     if (mousePos)
         Log::i().Print(Severity::Debug, "Moving cursor to position ({}, {}) and queuing keybind.", mousePos->x, mousePos->y);
