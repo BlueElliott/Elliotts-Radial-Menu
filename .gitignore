@@ -270,3 +270,6 @@ vcpkg_installed
 # Keep build scripts
 !build*.bat
 !DEVELOPMENT_SETUP.md
+
+# Claude Code settings
+.claude/
