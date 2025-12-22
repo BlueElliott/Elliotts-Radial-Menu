@@ -133,13 +133,51 @@ This would require testing to ensure no runtime compatibility issues.
 - Use vcpkg baseline or version constraints
 - Add vcpkg-configuration.json to lock dependencies
 
+## **SOLUTION FOUND! ✅**
+
+### Working Build Process
+
+The build issue has been **SOLVED**. The key was using the correct GW2Common commit.
+
+**Correct GW2Common commit**: `1a7253a` ("Fix build compatibility: PowerShell 5.1 support")
+- This commit HAS `Direct3D11Loader.h` ✅
+- This commit does NOT have `Defs.h` with `neargye/semver.hpp` dependency ✅
+- This is the commit used by the successful build at `70932d8` ✅
+
+### Build Commands That Work
+
+```bash
+# 1. Set GW2Common to correct commit
+cd extern/GW2Common
+git checkout 1a7253a
+git submodule update --init --recursive --force
+
+# 2. Build GW2Radial
+cd ../..
+"/c/Program Files/Microsoft Visual Studio/2022/Community/MSBuild/Current/Bin/MSBuild.exe" \
+  GW2Radial.vcxproj -p:Configuration=Debug -p:Platform=x64 -v:minimal
+
+# 3. Copy resource file if needed (first build only)
+mkdir -p int/GW2Common/x64/Debug
+cp extern/GW2Common/int/GW2Common/x64/Debug/BaseResource.res int/GW2Common/x64/Debug/
+
+# 4. Deploy to GW2
+cp bin/x64/Debug/gw2addon_gw2radial.dll "/c/Program Files/Guild Wars 2/addons/gw2radial/"
+```
+
+### Build Output
+
+- **DLL Size**: 52MB (Debug build)
+- **Location**: `bin\x64\Debug\gw2addon_gw2radial.dll`
+- **Deployed**: `/c/Program Files/Guild Wars 2/addons/gw2radial/`
+
 ## Current State
 
 - **Working v1.0.0 DLL**: ✅ Downloaded and works in game
-- **Can build from source**: ❌ Blocked by dependency issues
-- **Can modify and rebuild**: ❌ Cannot even build unmodified code
-- **GW2Common commit**: Inconsistent (git says 46ecca8, working directory has 2a2fca4)
-- **vcpkg state**: Installed but API incompatible
+- **Can build from source**: ✅ **SOLVED** - Using GW2Common commit 1a7253a
+- **Can modify and rebuild**: ✅ **READY** - Build process works
+- **GW2Common commit**: **1a7253a** (the correct one)
+- **vcpkg state**: Not needed with this GW2Common version
 
 ## Deployment Location
 
