@@ -150,6 +150,7 @@ cd "$(ProjectDir)shaders"
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\ChatWheel.cpp" />
     <ClCompile Include="src\Core.cpp" />
     <ClCompile Include="src\CustomWheel.cpp" />
     <ClCompile Include="src\Main.cpp" />
@@ -163,6 +164,7 @@ cd "$(ProjectDir)shaders"
     <ClCompile Include="src\WheelElement.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="include\ChatWheel.h" />
     <ClInclude Include="include\Core.h" />
     <ClInclude Include="include\CustomWheel.h" />
     <ClInclude Include="include\Defs.h" />

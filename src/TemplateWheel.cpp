@@ -322,17 +322,6 @@ void TemplateWheel::DrawMenu(Keybind** currentEditedKeybind)
 
     MenuSectionMisc();
 
-    UI::Title("Chat Commands");
-    ImGui::TextWrapped("Quick chat commands for commanding. Configure preset messages to send to squad or team chat.");
-    ImGui::Spacing();
-
-    // Placeholder for future chat command configuration
-    ImGui::TextDisabled("Chat command configuration will be added here.");
-    ImGui::TextDisabled("Features planned:");
-    ImGui::BulletText("Preset squad commands");
-    ImGui::BulletText("Quick target calls");
-    ImGui::BulletText("Keybind shortcuts for common messages");
-
     ImGui::PopID();
 }
 

@@ -5,6 +5,7 @@
 #include <ImGuiPopup.h>
 #include <Input.h>
 #include <Log.h>
+#include <ChatWheel.h>
 #include <MarkerWheel.h>
 #include <MiscTab.h>
 #include <MountWheel.h>
@@ -104,6 +105,7 @@ void Core::InnerInitPreImGui()
     wheels_.push_back(std::make_unique<MarkerWheel>(bgTex_));
     wheels_.push_back(std::make_unique<ObjectMarkerWheel>(bgTex_));
     wheels_.push_back(std::make_unique<TemplateWheel>(bgTex_));
+    wheels_.push_back(std::make_unique<ChatWheel>(bgTex_));
 
     vertexCB_ = ShaderManager::i().MakeConstantBuffer<VertexCB>();
 }
