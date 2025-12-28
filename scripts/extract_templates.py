@@ -53,7 +53,7 @@ if __name__ == "__main__":
         sys.exit(1)
 
     sprite_path = sys.argv[1]
-    output_dir = "art/Finals"
+    output_dir = "../art/Finals"
 
     extract_helmets(sprite_path, output_dir)
     print(f"\nExtracted 9 template icons to {output_dir}/")

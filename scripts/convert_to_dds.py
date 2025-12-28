@@ -95,7 +95,7 @@ def png_to_dds(png_path, dds_path):
     print(f"Converted {os.path.basename(png_path)} -> {os.path.basename(dds_path)}")
 
 def main():
-    input_dir = "art/Finals"
+    input_dir = "../art/Finals"
 
     for i in range(1, 10):
         png_path = os.path.join(input_dir, f"template{i}.png")

@@ -7,8 +7,8 @@ import shutil
 import os
 
 # Use the chair icon as a placeholder for now
-source = "art/Finals/chair.dds"
-output_dir = "art/Finals"
+source = "../art/Finals/chair.dds"
+output_dir = "../art/Finals"
 
 for i in range(1, 10):
     dest = os.path.join(output_dir, f"template{i}.dds")

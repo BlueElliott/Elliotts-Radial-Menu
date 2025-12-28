@@ -15,11 +15,11 @@ if "%ERRORLEVEL%"=="0" (
 )
 
 echo Deploying DLL...
-echo From: bin\x64\Debug\gw2addon_gw2radial.dll
+echo From: ..\bin\x64\Debug\gw2addon_gw2radial.dll
 echo To:   C:\Program Files\Guild Wars 2\addons\gw2radial\
 echo.
 
-copy /Y "bin\x64\Debug\gw2addon_gw2radial.dll" "C:\Program Files\Guild Wars 2\addons\gw2radial\gw2addon_gw2radial.dll"
+copy /Y "..\bin\x64\Debug\gw2addon_gw2radial.dll" "C:\Program Files\Guild Wars 2\addons\gw2radial\gw2addon_gw2radial.dll"
 
 if %ERRORLEVEL% EQU 0 (
     echo.
