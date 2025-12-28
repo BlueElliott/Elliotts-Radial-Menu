@@ -1,12 +1,29 @@
 # Elliott's Radial Menu
 
-A modified version of [**GW2Radial by Friendly0Fire**](https://github.com/Friendly0Fire/GW2Radial), extended with a **Template Wheel** feature for Build and Equipment template switching.
+A modified version of [**GW2Radial by Friendly0Fire**](https://github.com/Friendly0Fire/GW2Radial), extended with **Template Wheel** and **ChatWheel** features.
 
-> **Important**: This is a modified fork of the original GW2Radial. All credit for the original addon and its features goes to [Friendly0Fire](https://github.com/Friendly0Fire). I've simply added the Template Wheel functionality for switching Build and Equipment templates.
+> **Important**: This is a modified fork of the original GW2Radial. All credit for the original addon and its features goes to [Friendly0Fire](https://github.com/Friendly0Fire). I've added the Template Wheel and ChatWheel features.
 
-## What's New: Template Wheel
+## What's New
 
-**Template Wheel** - A new radial menu for switching Build and Equipment template combinations:
+### ChatWheel (v1.1.0)
+**ChatWheel** - A powerful radial menu for sending chat commands instantly:
+* **8 configurable command slots** with custom labels and messages
+* **Smart Dynamic Channel Selection** - Automatically chooses the right channel:
+  - Commander tag active → Squad Broadcast (Shift+Enter)
+  - In Fractals → Party chat (/p)
+  - In WvW → Squad chat (/d)
+  - Otherwise → Your configured default
+* **Channel Options**: Squad (/d), Party (/p), Say (/s), Squad Broadcast, or Dynamic (auto)
+* **Movement Preservation** - Automatically preserves WASD + mouse states when sending messages
+* **Text Labels** - Commands display their labels directly on the radial wheel
+* **Conditional Visibility** - Show/hide commands based on game state (Default, WvW)
+* **Customizable Ordering** - Drag commands to reorder on the wheel
+
+Perfect for WvW commanders, fractal groups, squad leaders, and quick communication in any content.
+
+### Template Wheel (v1.0.0)
+**Template Wheel** - A radial menu for switching Build and Equipment template combinations:
 * 9 configurable template slots with helmet icons
 * Combat queuing with visual timer (works like mount queuing)
 * Action chains that switch Build → Equipment templates in sequence
@@ -16,12 +33,12 @@ A modified version of [**GW2Radial by Friendly0Fire**](https://github.com/Friend
 ## Original GW2Radial Features
 
 All features from [Friendly0Fire's GW2Radial](https://github.com/Friendly0Fire/GW2Radial) are included:
-* Mount radial menu with smart automount
-* Novelty radial menu
-* Marker radial menu
-* Custom radial menus
-* Input queuing for combat situations
-* Conditional menus
+* **Mount Wheel** - Radial menu with smart automount
+* **Novelty Wheel** - Quick access to toys and novelties
+* **Marker Wheel** - Place commander markers
+* **Custom Wheels** - Create your own radial menus
+* **Input Queuing** - Actions queue during combat
+* **Conditional Menus** - Context-aware visibility
 
 ## Installation
 
@@ -36,13 +53,28 @@ All features from [Friendly0Fire's GW2Radial](https://github.com/Friendly0Fire/G
 
 ## Usage
 
-### General Usage (Original Features)
+### General Usage
 - Press `Shift+Alt+M` in-game to open settings
-- Configure keybinds for each wheel (Mount, Novelty, Marker, Template)
-- Set in-game keybinds (F11 → Control Options) that match your addon keybinds
+- Configure keybinds for each wheel (Mount, Novelty, Marker, Template, Chat Commands)
 - Hold the keybind to show the radial menu, move mouse, release to select
 
-### Template Wheel Specific
+### ChatWheel
+1. **Configure ChatWheel** (Shift+Alt+M → Chat Commands):
+   - Enable command slots and set custom labels
+   - Enter messages to send (can be multiple lines)
+   - Choose channel mode:
+     - **Manual**: Always use a specific channel (Squad/Party/Say/Broadcast)
+     - **Dynamic**: Auto-select based on context (recommended)
+   - Set visibility controls (when commands should appear)
+   - Configure your preferred default channel for PvE/open world
+
+2. **Use the ChatWheel**:
+   - Press your Chat Commands keybind
+   - Select a command from the radial menu
+   - Message sends instantly to the appropriate channel
+   - Movement keys automatically preserved while sending
+
+### Template Wheel
 1. **Configure in-game keybinds** (F11 → Control Options):
    - Set Build Template keybinds (e.g., Ctrl+1, Ctrl+2, etc.)
    - Set Equipment Template keybinds (e.g., Alt+1, Alt+2, etc.)
@@ -62,7 +94,7 @@ All features from [Friendly0Fire's GW2Radial](https://github.com/Friendly0Fire/G
 
 **Original Creator**: [Friendly0Fire](https://github.com/Friendly0Fire) - Creator of [GW2Radial](https://github.com/Friendly0Fire/GW2Radial)
 
-**Template Wheel Addition**: BlueElliott with Claude Code
+**ChatWheel & Template Wheel Additions**: BlueElliott with Claude Code
 
 **Original GW2Radial Credits**:
 - @QuitarHero and @TanukiSoup for extensive testing
@@ -95,9 +127,9 @@ If you enjoy this addon, please consider supporting [Friendly0Fire](https://gith
 
 For more help, [open an issue](https://github.com/BlueElliott/Elliotts-Radial-Menu/issues)
 
-### Template Wheel specific issues
+### ChatWheel or Template Wheel specific issues
 
-For bugs or questions about the Template Wheel feature, please [open an issue](https://github.com/BlueElliott/Elliotts-Radial-Menu/issues) on this repository.
+For bugs or questions about the ChatWheel or Template Wheel features, please [open an issue](https://github.com/BlueElliott/Elliotts-Radial-Menu/issues) on this repository.
 
 ## License
 
