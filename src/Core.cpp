@@ -196,6 +196,15 @@ void Core::InnerDraw()
 
     customWheels_->DrawOffscreen(context_.Get());
 
+    // Draw offscreen for ChatWheel text rendering
+    for (auto& wheel : wheels_)
+    {
+        if (auto* chatWheel = dynamic_cast<ChatWheel*>(wheel.get()))
+        {
+            chatWheel->DrawOffscreen(context_.Get());
+        }
+    }
+
     if (forceReloadWheels_)
     {
         forceReloadWheels_ = false;

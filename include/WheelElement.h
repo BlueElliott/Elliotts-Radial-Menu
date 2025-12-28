@@ -105,6 +105,11 @@ public:
         return displayName_;
     }
 
+    void displayName(const std::string& name)
+    {
+        displayName_ = name;
+    }
+
     mstime currentHoverTime() const
     {
         return currentHoverTime_;
