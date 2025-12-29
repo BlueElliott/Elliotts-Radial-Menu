@@ -15,9 +15,14 @@ TemplateWheel::TemplateWheel(std::shared_ptr<Texture2D> bgTexture)
     // Enable queuing - templates will retry if in combat/underwater/etc.
     clearConditionalDelayOnSend_ = false;
 
-    // Templates should queue when in combat (like mounts do), so we use UsableDefault (not UsableInCombat)
-    // but VisibleInCombat so they remain visible when queued
-    auto props = ConditionalProperties::UsableDefault | ConditionalProperties::VisibleDefault | ConditionalProperties::VisibleInCombat;
+    // Templates should queue when in combat, so UsableInCombat is OFF (enables queuing)
+    // All visibility flags ON by default so new users can see it working everywhere
+    auto props = ConditionalProperties::VisibleAll |
+                 ConditionalProperties::UsableDefault |
+                 ConditionalProperties::UsableUnderwater |
+                 ConditionalProperties::UsableOnWater |
+                 ConditionalProperties::UsableWvW;
+    // Note: UsableInCombat is intentionally OFF to enable combat queuing
 
     // Create 9 template combo elements
     for (int i = 1; i <= NUM_TEMPLATE_COMBOS; i++)
