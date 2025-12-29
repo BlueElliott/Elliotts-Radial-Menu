@@ -181,16 +181,14 @@ void Core::InnerDraw()
                 [&](const ImVec2& windowSize)
                 {
                     ImGui::TextWrapped(
-                        "Welcome to GW2Radial! This small addon shows a convenient, customizable radial menu overlay to select a mount, novelty and more on the fly for Guild Wars "
-                        "2. "
-                        "To begin, use the shortcut Shift+Alt+M to open the settings menu and take a moment to bind your keys. If you ever need further assistance, please visit "
-                        "this project's website at");
+                        "Welcome to Elliott's Radial Menu! This is an enhanced version of GW2Radial featuring ChatWheel and Template Wheel in addition to mounts, novelties, markers, and more. "
+                        "To begin, use the shortcut Shift+Alt+M to open the settings menu and configure your wheels. For more information, please visit:");
 
                     ImGui::Spacing();
                     ImGui::SetCursorPosX(windowSize.x * 0.1f);
 
-                    if (ImGui::Button("https://github.com/Friendly0Fire/GW2Radial", ImVec2(windowSize.x * 0.8f, ImGui::GetFontSize() * 1.3f)))
-                        ShellExecute(0, 0, L"https://github.com/Friendly0Fire/GW2Radial", 0, 0, SW_SHOW);
+                    if (ImGui::Button("https://github.com/BlueElliott/Elliotts-Radial-Menu", ImVec2(windowSize.x * 0.8f, ImGui::GetFontSize() * 1.3f)))
+                        ShellExecute(0, 0, L"https://github.com/BlueElliott/Elliotts-Radial-Menu", 0, 0, SW_SHOW);
                 },
                 [&]() { firstMessageShown_->value(true); });
 

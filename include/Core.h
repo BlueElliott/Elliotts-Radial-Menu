@@ -75,7 +75,7 @@ protected:
     }
     const wchar_t* GetGithubRepoSubUrl() const override
     {
-        return L"Friendly0Fire/GW2Radial";
+        return L"BlueElliott/Elliotts-Radial-Menu";
     }
 
     bool                                       forceReloadWheels_ = false;
